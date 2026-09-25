@@ -1,4 +1,4 @@
-"""Generate the AIDIVIDEND logo files (vector Divi + $AI dividend coin).
+"""Generate the AIDIVIDEND logo files (vector Divi + dividend coin).
 
 Run: python3 web/assets/build_logo.py [path/to/lilita.woff2] [path/to/jetbrains-bold.woff2]
 Fonts are optional; when given they are embedded so the SVGs render the same everywhere.
@@ -60,7 +60,7 @@ HEAD = """<g stroke-linejoin="round">
     <path d="M256,349 V356" stroke="#16172f" stroke-width="7" stroke-linecap="round"/>
   </g>"""
 
-# $AI coin with a 90 / 10 dividend ring, held in Divi's mouth
+# Gold coin with a 90 / 10 dividend ring, held in Divi's mouth
 CX, CY = 256, 404
 COIN = f"""<g>
     <circle cx="{CX}" cy="{CY}" r="98" fill="#16172f"/>
@@ -68,7 +68,7 @@ COIN = f"""<g>
     <path d="{arc(CX, CY, 88, 332, 356)}" fill="none" stroke="#f2b25e" stroke-width="14" stroke-linecap="round"/>
     <circle cx="{CX}" cy="{CY}" r="72" fill="url(#dv-gold)" stroke="#16172f" stroke-width="8"/>
     <circle cx="{CX}" cy="{CY}" r="58" fill="none" stroke="#8a5320" stroke-width="3" opacity=".5"/>
-    <text x="{CX}" y="{CY + 19}" text-anchor="middle" font-family="Lilita One, Arial Black, sans-serif" font-size="54" letter-spacing="1" fill="#16172f">$AI</text>
+    <path d="M{CX - 34},{CY - 30} A46,46 0 0 1 {CX + 10},{CY - 46}" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="7" stroke-linecap="round"/>
   </g>"""
 
 MARK = f'<g transform="translate(0 -30)">{HEAD}</g>\n  {COIN}'
@@ -81,7 +81,7 @@ def svg(body, w, h):
 
 
 WORDMARK = """<text x="560" y="286" textLength="880" lengthAdjust="spacingAndGlyphs" font-family="Lilita One, Arial Black, sans-serif" font-size="176"><tspan fill="#8cff6a">AI</tspan><tspan fill="#fff4e2">DIVIDEND</tspan></text>
-  <text x="566" y="364" font-family="JetBrains Mono, Menlo, monospace" font-weight="700" font-size="40" letter-spacing="6" fill="#f2b25e">HOLD $AIDIV · EARN $AI</text>"""
+  <text x="566" y="364" font-family="JetBrains Mono, Menlo, monospace" font-weight="700" font-size="40" letter-spacing="6" fill="#f2b25e">HOLD $AIDIV · EARN DIVIDENDS</text>"""
 
 (OUT / "logo.svg").write_text(svg(ICON, 512, 512))
 (OUT / "logo-mark.svg").write_text(svg(MARK, 512, 512))

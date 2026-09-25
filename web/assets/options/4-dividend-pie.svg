@@ -26,5 +26,6 @@
       <path d="M150,290 Q190,230 230,290 Q190,270 150,290 Z"/>
       <path d="M282,290 Q322,230 362,290 Q322,270 282,290 Z"/>
     </g>
-  <text x="256" y="420" text-anchor="middle" font-family="Lilita One, Arial Black, sans-serif" font-size="76" fill="#16172f">$AI</text>
+  <ellipse cx="256" cy="352" rx="22" ry="14" fill="#16172f"/>
+  <path d="M256,366 V378 M222,372 Q239,394 256,378 Q273,394 290,372" fill="none" stroke="#16172f" stroke-width="8" stroke-linecap="round"/>
 </svg>

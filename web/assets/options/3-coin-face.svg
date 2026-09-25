@@ -28,5 +28,5 @@
       <path d="M150,276 Q190,216 230,276 Q190,256 150,276 Z"/>
       <path d="M282,276 Q322,216 362,276 Q322,256 282,276 Z"/>
     </g>
-  <text x="256" y="414" text-anchor="middle" font-family="Lilita One, Arial Black, sans-serif" font-size="88" fill="#16172f">$AI</text>
+  <path d="M170,370 A110,110 0 0 0 250,412" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="10" stroke-linecap="round"/>
 </svg>

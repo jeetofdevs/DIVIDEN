@@ -36,6 +36,6 @@
     <path d="M214.7,326.3 A88,88 0 0 1 249.9,316.2" fill="none" stroke="#f2b25e" stroke-width="14" stroke-linecap="round"/>
     <circle cx="256" cy="404" r="72" fill="url(#dv-gold)" stroke="#16172f" stroke-width="8"/>
     <circle cx="256" cy="404" r="58" fill="none" stroke="#8a5320" stroke-width="3" opacity=".5"/>
-    <text x="256" y="423" text-anchor="middle" font-family="Lilita One, Arial Black, sans-serif" font-size="54" letter-spacing="1" fill="#16172f">$AI</text>
+    <path d="M222,374 A46,46 0 0 1 266,358" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="7" stroke-linecap="round"/>
   </g>
 </svg>
