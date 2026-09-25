@@ -2,16 +2,22 @@
 
 Bot **auto-distribusi fee token ke holder**, untuk token yang di-launch di [Long.xyz](https://app.long.xyz) (Robinhood Chain) atau chain EVM mana pun.
 
-Fee creator yang Anda klaim dikirim ke wallet distributor. Bot lalu secara berkala:
+Fee yang Anda klaim dikirim ke wallet distributor. Bot lalu secara berkala:
 
-1. **Memindai holder** dari event `Transfer` token Anda (inkremental, tidak perlu API pihak ketiga).
-2. **Menyaring** holder: pool LP, kontrak Long.xyz, dan smart contract lain, alamat burn, serta daftar pengecualian Anda.
-3. **Menghitung jatah** tiap holder secara proporsional dengan saldo token.
-4. **Mengirim** ETH atau ERC-20 (misalnya **Stock Token NVDA**) ke setiap holder. Dengan kontrak Disperse, 100 holder bisa dibayar dalam 1 transaksi.
-5. **Mengumumkan** hasilnya ke Telegram (opsional).
+1. **Menukar fee ke $AI:** fee dari pair masuk dalam token Anda dan $AI. Bagian token Anda otomatis ditukar ke $AI lewat DEX, dengan proteksi slippage.
+2. **Membagi hasilnya: 90% dividen ke holder, 10% ke wallet operasional.**
+3. **Memindai holder** dari event `Transfer` token Anda (inkremental, tidak perlu API pihak ketiga).
+4. **Menyaring** holder: pool LP, kontrak Long.xyz, dan smart contract lain, alamat burn, serta daftar pengecualian Anda.
+5. **Menghitung jatah** tiap holder secara proporsional dengan saldo token.
+6. **Mengirim** $AI, ETH, atau ERC-20 (misalnya **Stock Token NVDA**) ke setiap holder. Dengan kontrak Disperse, 100 holder bisa dibayar dalam 1 transaksi.
+7. **Mengumumkan** hasilnya ke Telegram (opsional).
 
 ```
-Fee Long.xyz ──klaim──► Wallet distributor ──bot tiap N menit──► semua holder
+Fee pair (TOKEN + $AI) ──klaim──► Wallet distributor
+                                        │  bot tiap N menit
+                                        ├─ swap TOKEN → $AI
+                                        ├─ 10% $AI → wallet operasional
+                                        └─ 90% $AI → semua holder (proporsional)
 ```
 
 ## Fitur keamanan
@@ -46,7 +52,23 @@ npm start                # jalan terus, tiap INTERVAL_MINUTES
 
 Set `PAYOUT_TOKEN` ke alamat Stock Token, lalu isi wallet distributor dengan token tersebut (swap fee ETH ke NVDA dulu). Bot akan membagikan NVDA ke holder. Wallet tetap butuh sedikit ETH untuk gas.
 
-### Contoh pembagian treasury
+### Dividen $AI (90% holder / 10% operasional)
+
+```env
+PAYOUT_TOKEN=0x...alamat $AI
+OPERATIONS_WALLET=0x...wallet operasional
+OPERATIONS_BPS=1000          # 10%
+SWAP_ROUTER=0x...router DEX tempat pair TOKEN/$AI berada
+SWAP_ROUTER_TYPE=v2          # atau v3 + SWAP_QUOTER
+SWAP_MAX_AMOUNT=1000000      # jual maks 1 jt TOKEN per putaran
+```
+
+Contoh: dalam satu putaran wallet menerima 5 $AI dan 1.000 TOKEN. TOKEN ditukar menjadi 6 $AI, jadi totalnya 11 $AI. Dari situ **1,1 $AI** masuk ke wallet operasional dan **9,9 $AI** dibagikan ke holder sesuai porsi token masing-masing.
+
+> ⚠️ Menjual fee dalam token Anda sendiri menambah tekanan jual. Gunakan `SWAP_MAX_AMOUNT` supaya penjualannya dicicil per putaran.
+> Alamat router/quoter DEX di Robinhood Chain **harus Anda pastikan sendiri** (lihat pair token Anda di explorer). Coba dulu dengan `SWAP_MAX_AMOUNT` kecil.
+
+### Contoh pembagian treasury lain
 
 Kalau hanya 70% fee yang ingin dibagikan ke holder, ada dua cara:
 
@@ -66,6 +88,7 @@ Semua opsi beserta penjelasannya ada di [`.env.example`](.env.example).
 | `src/allocate.ts` | Perhitungan jatah proporsional + akumulasi jatah kecil |
 | `src/payout.ts` | Pengiriman idempoten (transfer biasa / Disperse) |
 | `src/state.ts` | Penyimpanan state (`data/state.json`) |
+| `src/swap.ts` | Auto-swap fee ke token payout (router V2 / V3) |
 | `src/notify.ts` | Pengumuman Telegram |
 | `contracts/Disperse.sol` | Kontrak kirim-massal ETH/ERC-20 |
 

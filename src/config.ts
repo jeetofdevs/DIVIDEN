@@ -33,8 +33,26 @@ function bool(value: string): boolean {
 
 const payoutTokenRaw = optional("PAYOUT_TOKEN", "native");
 const disperseRaw = process.env.DISPERSE_ADDRESS?.trim();
-const distributeBps = int("DISTRIBUTE_BPS", optional("DISTRIBUTE_BPS", "10000"));
-if (distributeBps > 10_000) throw new Error("DISTRIBUTE_BPS maksimal 10000 (100%)");
+
+function bps(name: string, fallback: string): bigint {
+  const value = int(name, optional(name, fallback));
+  if (value > 10_000) throw new Error(`${name} maksimal 10000 (100%)`);
+  return BigInt(value);
+}
+
+const operationsRaw = process.env.OPERATIONS_WALLET?.trim();
+const operationsBps = bps("OPERATIONS_BPS", "0");
+if (operationsBps > 0n && !operationsRaw) throw new Error("OPERATIONS_BPS > 0 butuh OPERATIONS_WALLET");
+
+const swapRouterRaw = process.env.SWAP_ROUTER?.trim();
+const swapType = optional("SWAP_ROUTER_TYPE", "v2").toLowerCase();
+if (swapType !== "v2" && swapType !== "v3") throw new Error("SWAP_ROUTER_TYPE harus v2 atau v3");
+if (swapRouterRaw && payoutTokenRaw.toLowerCase() === "native") {
+  throw new Error("Auto-swap butuh PAYOUT_TOKEN berupa alamat ERC-20 (mis. $AI)");
+}
+if (swapRouterRaw && swapType === "v3" && !process.env.SWAP_QUOTER?.trim()) {
+  throw new Error("SWAP_ROUTER_TYPE=v3 butuh SWAP_QUOTER (QuoterV2)");
+}
 
 export const config = {
   rpcUrl: required("RPC_URL"),
@@ -53,7 +71,34 @@ export const config = {
       : address("PAYOUT_TOKEN", payoutTokenRaw),
 
   /** Porsi saldo wallet distributor yang dibagikan tiap putaran (basis poin, 10000 = 100%). */
-  distributeBps: BigInt(distributeBps),
+  distributeBps: bps("DISTRIBUTE_BPS", "10000"),
+
+  /** Bagian pool untuk wallet operasional (1000 = 10%); sisanya ke holder. */
+  operations:
+    operationsBps > 0n
+      ? { wallet: address("OPERATIONS_WALLET", operationsRaw!), bps: operationsBps }
+      : undefined,
+
+  /**
+   * Auto-swap: token fee (default: token Anda sendiri) di wallet distributor
+   * ditukar ke PAYOUT_TOKEN (mis. $AI) sebelum dibagikan.
+   */
+  swap: swapRouterRaw
+    ? {
+        router: address("SWAP_ROUTER", swapRouterRaw),
+        type: swapType as "v2" | "v3",
+        quoter: process.env.SWAP_QUOTER?.trim()
+          ? address("SWAP_QUOTER", process.env.SWAP_QUOTER.trim())
+          : undefined,
+        feeTier: int("SWAP_FEE_TIER", optional("SWAP_FEE_TIER", "3000")),
+        tokenIn: address("SWAP_TOKEN_IN", optional("SWAP_TOKEN_IN", required("TOKEN_ADDRESS"))),
+        slippageBps: bps("SWAP_SLIPPAGE_BPS", "300"),
+        /** Satuan token input. "0" = tanpa batas. */
+        minAmount: optional("SWAP_MIN_AMOUNT", "0"),
+        maxAmount: optional("SWAP_MAX_AMOUNT", "0"),
+      }
+    : undefined,
+
   /** Dalam satuan token payout (mis. "0.01" ETH). */
   gasReserve: optional("GAS_RESERVE", "0.005"),
   minPool: optional("MIN_POOL", "0.01"),

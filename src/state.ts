@@ -23,6 +23,8 @@ export interface Run {
   pool: string;
   allocated: string;
   eligibleHolders: number;
+  /** Bagian wallet operasional di putaran ini (sudah termasuk di `batches`). */
+  operations?: { address: Address; amount: string };
   status: "sending" | "done";
   batches: Batch[];
 }

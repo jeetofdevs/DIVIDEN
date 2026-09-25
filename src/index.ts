@@ -14,6 +14,7 @@ import { config as cfg } from "./config.js";
 import { eligibleBalances, syncBalances } from "./holders.js";
 import { announce } from "./notify.js";
 import { ensureAllowance, sendBatch } from "./payout.js";
+import { swapFeesToPayout } from "./swap.js";
 import { fromBigIntMap, loadState, saveState, toBigIntMap, type Run, type State } from "./state.js";
 
 const chain = defineChain({
@@ -64,10 +65,12 @@ async function executeRun(state: State, run: Run, meta: { decimals: number; symb
   const pending = toBigIntMap(state.pending);
   let paid = 0n;
   let paidHolders = 0;
+  let paidOps = 0n;
   for (const batch of run.batches) {
     batch.recipients.forEach((to, j) => {
       const amount = BigInt(batch.amounts[j]);
       if (batch.status === "failed") pending.set(to, (pending.get(to) ?? 0n) + amount);
+      else if (to === run.operations?.address) paidOps += amount;
       else {
         paid += amount;
         paidHolders++;
@@ -82,6 +85,7 @@ async function executeRun(state: State, run: Run, meta: { decimals: number; symb
   const failed = run.batches.filter((b) => b.status === "failed").length;
   const summary =
     `💰 DIVIDEN #${run.id}: ${formatUnits(paid, meta.decimals)} ${meta.symbol} dibagikan ke ${paidHolders} holder` +
+    (paidOps > 0n ? ` + ${formatUnits(paidOps, meta.decimals)} ${meta.symbol} ke wallet operasional` : "") +
     (failed ? ` (${failed} transaksi gagal, dijadwalkan ulang)` : "");
   log(summary);
   if (paid > 0n) await announce(cfg, cfg.explorerUrl ? `${summary}\n${cfg.explorerUrl}/address/${account.address}` : summary);
@@ -98,7 +102,10 @@ async function tick() {
     return;
   }
 
-  // 1. Snapshot holder
+  // 1. Tukar fee (mis. token Anda dari pair) ke token payout (mis. $AI)
+  if (cfg.swap && !cfg.dryRun) await swapFeesToPayout(publicClient, wallet, cfg, log);
+
+  // 2. Snapshot holder
   const head = await publicClient.getBlockNumber();
   const snapshotBlock = head - cfg.confirmations;
   log(`Sinkronisasi holder sampai blok ${snapshotBlock}`);
@@ -106,7 +113,7 @@ async function tick() {
   const balances = await eligibleBalances(publicClient, cfg, state, account.address);
   saveState(cfg.statePath, state);
 
-  // 2. Hitung pool yang bisa dibagikan
+  // 3. Hitung pool yang bisa dibagikan
   const pending = toBigIntMap(state.pending);
   const owed = [...pending.values()].reduce((a, b) => a + b, 0n);
   const reserve = cfg.payoutToken === "native" ? parseUnits(cfg.gasReserve, meta.decimals) : 0n;
@@ -122,34 +129,38 @@ async function tick() {
     return;
   }
 
-  // 3. Alokasi
+  // 4. Alokasi
   const tokenDecimals = await publicClient.readContract({
     address: cfg.token,
     abi: erc20Abi,
     functionName: "decimals",
   });
+  const opsCut = cfg.operations ? (pool * cfg.operations.bps) / 10_000n : 0n;
   const result = allocate({
     balances,
-    pool,
+    pool: pool - opsCut,
     pending,
     minHolding: parseUnits(cfg.minHolding, tokenDecimals),
     minPayout: parseUnits(cfg.minPayout, meta.decimals),
   });
+  const payouts = opsCut > 0n ? [{ address: cfg.operations!.wallet, amount: opsCut }, ...result.payouts] : result.payouts;
+  if (opsCut > 0n) log(`Operasional: ${formatUnits(opsCut, meta.decimals)} ${meta.symbol} → ${cfg.operations!.wallet}`);
   log(`${result.eligibleHolders} holder berhak, ${result.payouts.length} dibayar putaran ini, ${result.pending.size} ditahan (di bawah MIN_PAYOUT)`);
 
   if (cfg.dryRun) {
+    if (cfg.swap) log("(Auto-swap tidak dijalankan saat DRY_RUN)");
     for (const p of result.payouts.slice(0, 20)) log(`  ${p.address}  ${formatUnits(p.amount, meta.decimals)} ${meta.symbol}`);
     if (result.payouts.length > 20) log(`  ... dan ${result.payouts.length - 20} lainnya`);
     log("DRY_RUN=true — tidak ada yang dikirim. Set DRY_RUN=false untuk mengirim sungguhan.");
     return;
   }
-  if (result.payouts.length === 0) {
+  if (payouts.length === 0) {
     state.pending = fromBigIntMap(result.pending);
     saveState(cfg.statePath, state);
     return;
   }
 
-  // 4. Simpan rencana distribusi SEBELUM mengirim apa pun
+  // 5. Simpan rencana distribusi SEBELUM mengirim apa pun
   const size = cfg.disperse ? Math.max(1, cfg.batchSize) : 1;
   const run: Run = {
     id: (state.runs.at(-1)?.id ?? 0) + 1,
@@ -159,8 +170,9 @@ async function tick() {
     pool: pool.toString(),
     allocated: result.allocated.toString(),
     eligibleHolders: result.eligibleHolders,
+    operations: opsCut > 0n ? { address: cfg.operations!.wallet, amount: opsCut.toString() } : undefined,
     status: "sending",
-    batches: chunk(result.payouts, size).map((group) => ({
+    batches: chunk(payouts, size).map((group) => ({
       recipients: group.map((p) => p.address),
       amounts: group.map((p) => p.amount.toString()),
       status: "queued",
@@ -170,7 +182,7 @@ async function tick() {
   state.pending = fromBigIntMap(result.pending);
   saveState(cfg.statePath, state);
 
-  // 5. Kirim
+  // 6. Kirim
   log(`Distribusi #${run.id}: ${run.batches.length} transaksi`);
   await executeRun(state, run, meta);
 }

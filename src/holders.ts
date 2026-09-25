@@ -58,6 +58,7 @@ export async function eligibleBalances(
   distributor: Address,
 ): Promise<Map<Address, bigint>> {
   const excluded = new Set<Address>([zeroAddress, DEAD, cfg.token, distributor, ...cfg.excluded]);
+  if (cfg.operations) excluded.add(cfg.operations.wallet);
   const result = new Map<Address, bigint>();
 
   for (const [holder, raw] of Object.entries(state.scan.balances) as [Address, string][]) {
