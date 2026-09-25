@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Hold $AIDIV and earn $AI. Trading fees from the $AIDIV/$AI pair are swapped to $AI and airdropped to holders automatically: 90% to holders, 10% to operations.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<title>AIDIVIDEND</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --night: #16172f;
+    --navy: #22234a;
+    --navy-2: #2c2e5c;
+    --line: #3b3d72;
+    --visor: #8cff6a;
+    --visor-dim: #5fc94a;
+    --fur: #f2b25e;
+    --ear: #e8826b;
+    --cream: #fff4e2;
+    --muted: #b9b6d6;
+    --display: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--cream);
+    font: 400 17px/1.6 var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--visor); outline-offset: 3px; border-radius: 6px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; }
+
+  /* ── Nav ─────────────────────────── */
+  .nav {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+    background: color-mix(in srgb, var(--night) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-size: 22px; letter-spacing: .5px; }
+  .brand svg { width: 38px; height: 38px; }
+  .brand b { color: var(--visor); font-weight: 400; }
+  .nav nav { display: flex; align-items: center; gap: 22px; font-weight: 600; font-size: 15px; }
+  .nav nav a:not(.btn) { text-decoration: none; color: var(--muted); }
+  .nav nav a:not(.btn):hover { color: var(--cream); }
+  @media (max-width: 760px) { .nav nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: 999px;
+    font: 700 15px/1 var(--body); text-decoration: none; cursor: pointer; border: 0;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-visor { background: var(--visor); color: var(--night); box-shadow: 0 0 0 0 rgba(140,255,106,.5); }
+  .btn-visor:hover { transform: translateY(-2px); box-shadow: 0 8px 28px -6px rgba(140,255,106,.55); }
+  .btn-ghost { background: transparent; color: var(--cream); border: 2px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--fur); }
+  .nav .btn { padding: 10px 16px; font-size: 14px; }
+
+  /* ── Hero ────────────────────────── */
+  .hero { position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: -20% -10% auto auto; width: 70%; aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgba(140,255,106,.16), transparent 70%);
+    pointer-events: none;
+  }
+  .hero .wrap {
+    display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 40px;
+    padding-block: 72px 64px;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 700 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+    color: var(--visor); background: rgba(140,255,106,.08); border: 1px solid rgba(140,255,106,.3);
+    padding: 8px 12px; border-radius: 999px;
+  }
+  .eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: var(--visor); box-shadow: 0 0 10px var(--visor); }
+  h1 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(48px, 8vw, 92px); line-height: .95; letter-spacing: .5px;
+    margin: 22px 0 18px; text-wrap: balance;
+  }
+  h1 .earn { color: var(--visor); text-shadow: 0 0 28px rgba(140,255,106,.45); }
+  .lede { font-size: 19px; color: var(--muted); max-width: 34em; margin: 0 0 30px; }
+  .lede strong { color: var(--cream); }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .ca {
+    margin-top: 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    font: 500 13px/1.4 var(--mono); color: var(--muted);
+  }
+  .ca code { color: var(--cream); background: var(--navy); border: 1px solid var(--line); padding: 6px 10px; border-radius: 8px; }
+
+  .coin { width: 100%; max-width: 440px; justify-self: center; filter: drop-shadow(0 30px 60px rgba(0,0,0,.45)); }
+  .coin .ring-text { transform-origin: 256px 256px; animation: spin 40s linear infinite; }
+  .coin .visor-glow { animation: glow 3.2s ease-in-out infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes glow { 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) {
+    .coin .ring-text, .coin .visor-glow { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; padding-block: 40px 48px; }
+    .coin { max-width: 300px; order: -1; }
+  }
+
+  /* ── Stat strip ──────────────────── */
+  .strip { border-block: 1px solid var(--line); background: var(--navy); }
+  .strip .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .stat { padding: 26px 20px; border-left: 1px solid var(--line); }
+  .stat:first-child { border-left: 0; }
+  .stat .v { font-family: var(--display); font-size: 40px; line-height: 1; color: var(--fur); }
+  .stat .v small { font-size: 22px; }
+  .stat .k { margin-top: 8px; font-size: 14px; color: var(--muted); }
+  @media (max-width: 760px) {
+    .strip .wrap { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(3) { border-left: 0; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+  }
+
+  /* ── Sections ────────────────────── */
+  section.block { padding-block: 88px; }
+  .sec-head { max-width: 640px; margin-bottom: 44px; }
+  .sec-head .tag { font: 700 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--fur); }
+  h2 { font-family: var(--display); font-weight: 400; font-size: clamp(34px, 5vw, 52px); line-height: 1.02; margin: 14px 0 14px; text-wrap: balance; }
+  .sec-head p { color: var(--muted); margin: 0; }
+
+  /* How it works: a real sequence */
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: step; }
+  .flow li { position: relative; padding: 24px 22px 26px; background: var(--navy); border: 1px solid var(--line); border-radius: 20px; counter-increment: step; }
+  .flow li::before {
+    content: counter(step); display: grid; place-items: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    font: 400 22px/1 var(--display); color: var(--night); background: var(--fur);
+  }
+  .flow li:last-child::before { background: var(--visor); }
+  .flow h3 { font-size: 19px; margin: 18px 0 8px; }
+  .flow p { margin: 0; font-size: 15px; color: var(--muted); }
+  .flow .unit { font-family: var(--mono); font-size: 13px; color: var(--cream); }
+  @media (max-width: 900px) { .flow { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .flow { grid-template-columns: 1fr; } }
+
+  /* Split */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .bar { display: flex; height: 76px; border-radius: 18px; overflow: hidden; border: 2px solid var(--line); }
+  .bar .h { flex: 90; background: repeating-linear-gradient(135deg, var(--visor) 0 14px, var(--visor-dim) 14px 28px); display: flex; align-items: center; padding-left: 20px; color: var(--night); font: 400 28px/1 var(--display); }
+  .bar .o { flex: 10; background: var(--fur); }
+  .legend { display: grid; gap: 14px; margin-top: 22px; }
+  .legend div { display: grid; grid-template-columns: 14px 64px 1fr; align-items: baseline; gap: 12px; }
+  .legend i { width: 14px; height: 14px; border-radius: 4px; transform: translateY(2px); }
+  .legend b { font: 700 18px/1 var(--mono); }
+  .legend span { color: var(--muted); font-size: 15px; }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+
+  /* Calculator */
+  .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+  .calc form { padding: 30px; display: grid; gap: 20px; background: var(--navy); }
+  .field { display: grid; gap: 8px; }
+  .field label { font-weight: 600; font-size: 15px; }
+  .field .hint { font-size: 13px; color: var(--muted); }
+  .field input {
+    width: 100%; padding: 14px 16px; border-radius: 12px;
+    background: var(--night); color: var(--cream); border: 1px solid var(--line);
+    font: 500 17px/1 var(--mono); font-variant-numeric: tabular-nums;
+  }
+  .field input:focus { outline: none; border-color: var(--visor); box-shadow: 0 0 0 3px rgba(140,255,106,.2); }
+  .result { padding: 30px; display: grid; align-content: center; gap: 18px; background: linear-gradient(160deg, var(--navy-2), var(--night)); }
+  .result .share { font: 500 14px/1.4 var(--mono); color: var(--muted); }
+  .result .big { font-family: var(--display); font-size: clamp(44px, 6vw, 64px); line-height: 1; color: var(--visor); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .result .big small { font-size: .45em; color: var(--cream); }
+  .periods { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .periods div { padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; }
+  .periods span { display: block; font-size: 13px; color: var(--muted); }
+  .periods b { font: 700 18px/1.3 var(--mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .note { font-size: 13px; color: var(--muted); margin: 0; }
+  @media (max-width: 860px) { .calc { grid-template-columns: 1fr; } }
+
+  /* Trust */
+  .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 40px; }
+  .trust h3 { font-size: 19px; margin: 0 0 8px; display: flex; align-items: center; gap: 10px; }
+  .trust h3 svg { flex: none; width: 22px; height: 22px; color: var(--visor); }
+  .trust p { margin: 0; color: var(--muted); font-size: 15px; }
+  @media (max-width: 860px) { .trust { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .trust { grid-template-columns: 1fr; } }
+
+  /* FAQ */
+  .faq { max-width: 760px; }
+  .faq details { border-bottom: 1px solid var(--line); padding-block: 18px; }
+  .faq summary { cursor: pointer; font-weight: 700; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq summary::after { content: "+"; font-family: var(--display); color: var(--fur); font-size: 24px; line-height: 1; }
+  .faq details[open] summary::after { content: "–"; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq p { color: var(--muted); margin: 12px 0 0; }
+
+  /* Final CTA + footer */
+  .final { text-align: center; padding-block: 90px; background: radial-gradient(60% 80% at 50% 100%, rgba(242,178,94,.16), transparent 70%); border-top: 1px solid var(--line); }
+  .final h2 { margin-inline: auto; max-width: 14ch; }
+  .final .cta-row { justify-content: center; margin-top: 26px; }
+  footer { border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-block: 28px; font-size: 13px; color: var(--muted); }
+  footer p { margin: 0; max-width: 60ch; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AIDIVIDEND home">
+      <svg viewBox="0 0 512 512" aria-hidden="true"><use href="#coin-mark"/></svg>
+      <span><b>AI</b>DIVIDEND</span>
+    </a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#split">Tokenomics</a>
+      <a href="#calc">Calculator</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-visor" href="https://app.long.xyz" target="_blank" rel="noopener">Buy $AIDIV</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow"><i></i>Launching on Long.xyz · Robinhood Chain</span>
+        <h1>Hold $AIDIV.<br><span class="earn">Earn $AI.</span></h1>
+        <p class="lede">Every trade on the <strong>$AIDIV / $AI</strong> pair pays a fee. Divi, our AI-powered distributor, swaps those fees to <strong>$AI</strong> and drops <strong>90%</strong> straight into holders' wallets. No staking. No claiming. Just hold.</p>
+        <div class="cta-row">
+          <a class="btn btn-visor" href="https://app.long.xyz" target="_blank" rel="noopener">Buy on Long.xyz</a>
+          <a class="btn btn-ghost" href="#calc">Estimate my dividend</a>
+        </div>
+        <div class="ca">
+          <span>Contract</span>
+          <code id="ca">TBA at launch</code>
+          <button class="btn btn-ghost" type="button" id="copy-ca" style="padding:6px 12px;font-size:13px">Copy</button>
+        </div>
+      </div>
+
+      <svg class="coin" viewBox="0 0 512 512" role="img" aria-label="AIDIVIDEND logo: Divi the dog wearing an AI visor inside a gold dividend coin">
+        <defs>
+          <radialGradient id="rim" cx="35%" cy="30%" r="80%">
+            <stop offset="0" stop-color="#ffe3a3"/>
+            <stop offset=".55" stop-color="#f2b25e"/>
+            <stop offset="1" stop-color="#c97a2c"/>
+          </radialGradient>
+          <clipPath id="face"><circle cx="256" cy="256" r="182"/></clipPath>
+          <path id="ring" d="M256,256 m-213,0 a213,213 0 1,1 426,0 a213,213 0 1,1 -426,0"/>
+          <g id="coin-mark">
+            <circle cx="256" cy="256" r="252" fill="url(#rim)"/>
+            <circle cx="256" cy="256" r="244" fill="none" stroke="#8a5320" stroke-width="3" opacity=".6"/>
+            <circle cx="256" cy="256" r="196" fill="#16172f"/>
+            <image href="assets/mascot.jpg" x="74" y="74" width="364" height="364" clip-path="url(#face)" preserveAspectRatio="xMidYMid slice"/>
+            <circle cx="256" cy="256" r="186" fill="none" stroke="#8cff6a" stroke-width="6"/>
+            <g transform="translate(362 362)">
+              <circle r="46" fill="#8cff6a" stroke="#16172f" stroke-width="7"/>
+              <path d="M0,-25 L20,-2 H7.5 V23 H-7.5 V-2 H-20 Z" fill="#16172f"/>
+            </g>
+          </g>
+        </defs>
+        <use href="#coin-mark"/>
+        <circle class="visor-glow" cx="256" cy="256" r="186" fill="none" stroke="#8cff6a" stroke-width="14" opacity=".15"/>
+        <g class="ring-text">
+          <text font-family="Lilita One, Arial Rounded MT Bold, sans-serif" font-size="27" letter-spacing="3" fill="#22234a">
+            <textPath href="#ring" textLength="1320" lengthAdjust="spacing">AIDIVIDEND ✦ HOLD $AIDIV ✦ EARN $AI ✦ 90% TO HOLDERS ✦</textPath>
+          </text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap">
+      <div class="stat"><div class="v">90<small>%</small></div><div class="k">of fees paid to holders in $AI</div></div>
+      <div class="stat"><div class="v">10<small>%</small></div><div class="k">to operations and growth</div></div>
+      <div class="stat"><div class="v">60<small>min</small></div><div class="k">between payout rounds</div></div>
+      <div class="stat"><div class="v">0</div><div class="k">claims, staking or lockups needed</div></div>
+    </div>
+  </div>
+
+  <section class="block" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="tag">How it works</span>
+        <h2>From trading fee to your wallet in four steps</h2>
+        <p>The whole loop runs on-chain every round. Every swap and payout has a transaction hash you can check.</p>
+      </div>
+      <ol class="flow">
+        <li>
+          <h3>Fees are collected</h3>
+          <p>Each buy and sell on the <span class="unit">$AIDIV/$AI</span> pair generates fees in both tokens. They go to the distributor wallet.</p>
+        </li>
+        <li>
+          <h3>Swapped to $AI</h3>
+          <p>The $AIDIV part is sold for $AI in small slices with a slippage cap, so the chart isn't dumped.</p>
+        </li>
+        <li>
+          <h3>Holders snapshotted</h3>
+          <p>Divi reads every <span class="unit">Transfer</span> event and skips LP pools, contracts and burn addresses.</p>
+        </li>
+        <li>
+          <h3>$AI airdropped</h3>
+          <p>90% is split pro rata by balance and sent in batched transactions. Tiny shares roll over until they're worth the gas.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="split" style="padding-top:0">
+    <div class="wrap split">
+      <div class="sec-head" style="margin:0">
+        <span class="tag">Tokenomics</span>
+        <h2>Nine of every ten fee dollars go back to you</h2>
+        <p>The split is fixed in the distributor config and published with every round, so anyone can verify it.</p>
+      </div>
+      <div>
+        <div class="bar" role="img" aria-label="Fee split: 90 percent holders, 10 percent operations">
+          <div class="h">90%</div><div class="o"></div>
+        </div>
+        <div class="legend">
+          <div><i style="background:var(--visor)"></i><b>90%</b><span>$AI dividend to every eligible $AIDIV holder, by balance</span></div>
+          <div><i style="background:var(--fur)"></i><b>10%</b><span>Operations: gas, development, listings and marketing</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="calc" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="tag">Dividend calculator</span>
+        <h2>What would your bag earn?</h2>
+        <p>Plug in your holdings and a daily fee figure to see your share. The numbers below are an example.</p>
+      </div>
+      <div class="calc">
+        <form id="calc-form" autocomplete="off">
+          <div class="field">
+            <label for="hold">Your $AIDIV</label>
+            <input id="hold" inputmode="decimal" value="5,000,000">
+          </div>
+          <div class="field">
+            <label for="supply">Eligible supply</label>
+            <input id="supply" inputmode="decimal" value="800,000,000">
+            <span class="hint">Tokens held by wallets. LP and contracts are excluded.</span>
+          </div>
+          <div class="field">
+            <label for="fees">Daily fees, in $AI</label>
+            <input id="fees" inputmode="decimal" value="20,000">
+            <span class="hint">Depends on trading volume. Check the live dashboard after launch.</span>
+          </div>
+        </form>
+        <div class="result" aria-live="polite">
+          <div class="share" id="share">Your share: 0.625% of the holder pool</div>
+          <div class="big"><span id="daily">112.5</span> <small>$AI / day</small></div>
+          <div class="periods">
+            <div><span>Per week</span><b id="weekly">787.5 $AI</b></div>
+            <div><span>Per month</span><b id="monthly">3,375 $AI</b></div>
+          </div>
+          <p class="note">Estimate only. Formula: daily fees × 90% × your share of eligible supply.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="tag">Built to be trusted</span>
+        <h2>A distributor you can audit</h2>
+      </div>
+      <div class="trust">
+        <div>
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>Never pays twice</h3>
+          <p>Each payout is signed and recorded before it's sent. If the bot restarts mid-round, it resumes the exact same transactions.</p>
+        </div>
+        <div>
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>On-chain proof</h3>
+          <p>Every swap and airdrop links to the Robinhood Chain explorer. Totals are posted to Telegram after each round.</p>
+        </div>
+        <div>
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="9"/></svg>Fair by design</h3>
+          <p>LP pools, the launchpad contract and team wallets are excluded, so dividends reach real holders only.</p>
+        </div>
+        <div>
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Gentle on the chart</h3>
+          <p>Fee tokens are sold in capped slices with slippage protection instead of one big market sell.</p>
+        </div>
+        <div>
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 11h18M8 3v4M16 3v4"/></svg>Batched to save gas</h3>
+          <p>Up to 100 holders are paid in a single transaction through a Disperse contract.</p>
+        </div>
+        <div>
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>Small bags count</h3>
+          <p>Shares too small to send are saved and paid out once they add up. Nothing is forfeited.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">FAQ</span><h2>Questions holders ask</h2></div>
+      <div class="faq">
+        <details open>
+          <summary>Do I need to claim or stake?</summary>
+          <p>No. Keep $AIDIV in your own wallet and $AI arrives automatically every round.</p>
+        </details>
+        <details>
+          <summary>Why am I paid in $AI and not ETH?</summary>
+          <p>$AIDIV trades against $AI, so fees already arrive partly in $AI. Paying in $AI keeps the loop simple and adds steady buy pressure on $AI.</p>
+        </details>
+        <details>
+          <summary>My wallet received nothing this round. Why?</summary>
+          <p>Very small shares are held until they pass the minimum payout, so gas doesn't eat your dividend. They are paid in a later round. Wallets that are smart contracts are excluded.</p>
+        </details>
+        <details>
+          <summary>Where does the 10% operations share go?</summary>
+          <p>To a public operations wallet that pays for bot gas, development, listings and marketing. Its address is published at launch.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <h2>Let Divi fetch your dividends</h2>
+      <div class="cta-row">
+        <a class="btn btn-visor" href="https://app.long.xyz" target="_blank" rel="noopener">Buy $AIDIV on Long.xyz</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 AIDIVIDEND</span>
+    <p>$AIDIV is a community token with no expectation of profit. Dividend amounts depend on trading volume and are not guaranteed. Nothing on this site is financial advice.</p>
+  </div>
+</footer>
+
+<script>
+  const fmt = (n) => n.toLocaleString("en-US", { maximumFractionDigits: n < 10 ? 4 : n < 1000 ? 2 : 0 });
+  const num = (id) => Number(document.getElementById(id).value.replace(/[^0-9.]/g, "")) || 0;
+  function update() {
+    const hold = num("hold"), supply = num("supply"), fees = num("fees");
+    const share = supply > 0 ? Math.min(hold / supply, 1) : 0;
+    const daily = fees * 0.9 * share;
+    document.getElementById("share").textContent = `Your share: ${(share * 100).toLocaleString("en-US", { maximumFractionDigits: 4 })}% of the holder pool`;
+    document.getElementById("daily").textContent = fmt(daily);
+    document.getElementById("weekly").textContent = `${fmt(daily * 7)} $AI`;
+    document.getElementById("monthly").textContent = `${fmt(daily * 30)} $AI`;
+  }
+  document.getElementById("calc-form").addEventListener("input", update);
+  document.getElementById("calc-form").addEventListener("submit", (e) => e.preventDefault());
+  update();
+
+  document.getElementById("copy-ca").addEventListener("click", async (e) => {
+    const text = document.getElementById("ca").textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      e.currentTarget.textContent = "Copied";
+    } catch {
+      const range = document.createRange();
+      range.selectNodeContents(document.getElementById("ca"));
+      getSelection().removeAllRanges();
+      getSelection().addRange(range);
+    }
+  });
+</script>
+</body>
+</html>

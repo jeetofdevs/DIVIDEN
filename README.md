@@ -28,6 +28,19 @@ Fee pair (TOKEN + $AI) ──klaim──► Wallet distributor
 - **Transaksi gagal dijadwalkan ulang:** jumlahnya dikembalikan ke saldo pending holder.
 - **Cadangan gas:** `GAS_RESERVE` ETH selalu disisakan di wallet.
 
+## Website & logo (AIDIVIDEND)
+
+Folder `web/` berisi landing page berbahasa Inggris (HTML statis, tanpa build) dan aset brand:
+
+| File | Kegunaan |
+|---|---|
+| `web/index.html` | Landing page: hero, cara kerja, tokenomics 90/10, kalkulator dividen, FAQ |
+| `web/assets/logo.svg` / `logo-512.png` | Logo koin (untuk PFP X/Telegram, logo token di Long.xyz) |
+| `web/assets/logo-horizontal.svg` / `.png` | Logo + wordmark (banner, header) |
+| `web/assets/mascot.jpg` | Maskot asli "Divi" |
+
+Deploy: upload folder `web/` ke Vercel, Netlify, Cloudflare Pages, atau GitHub Pages. Setelah launch, ganti `TBA at launch` di `index.html` dengan contract address.
+
 ## Cara pakai
 
 Syarat: Node.js 22+.
