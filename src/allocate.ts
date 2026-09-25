@@ -71,3 +71,13 @@ export function chunk<T>(items: T[], size: number): T[][] {
   for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
   return out;
 }
+
+/**
+ * Waktu putaran berikutnya, dibulatkan ke kelipatan interval sejak epoch (UTC).
+ * INTERVAL_MINUTES=60 berarti tepat tiap awal jam (00:00, 01:00, ...), berapa pun
+ * lamanya satu putaran berjalan, jadi jadwal tidak bergeser.
+ */
+export function nextSlot(now: number, intervalMinutes: number): number {
+  const step = Math.max(1, intervalMinutes) * 60_000;
+  return Math.floor(now / step) * step + step;
+}

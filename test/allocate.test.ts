@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Address } from "viem";
-import { allocate, chunk } from "../src/allocate.js";
+import { allocate, chunk, nextSlot } from "../src/allocate.js";
 
 const A = "0x000000000000000000000000000000000000000A" as Address;
 const B = "0x000000000000000000000000000000000000000b" as Address;
@@ -83,5 +83,17 @@ describe("allocate", () => {
 describe("chunk", () => {
   it("memecah daftar menjadi batch", () => {
     expect(chunk([1, 2, 3, 4, 5], 2)).toEqual([[1, 2], [3, 4], [5]]);
+  });
+});
+
+describe("nextSlot", () => {
+  it("jatuh tepat di awal jam berikutnya", () => {
+    expect(nextSlot(Date.parse("2026-09-25T13:47:12Z"), 60)).toBe(Date.parse("2026-09-25T14:00:00Z"));
+  });
+  it("tepat di awal jam → jadwalkan jam berikutnya, bukan sekarang", () => {
+    expect(nextSlot(Date.parse("2026-09-25T14:00:00Z"), 60)).toBe(Date.parse("2026-09-25T15:00:00Z"));
+  });
+  it("mendukung interval lain", () => {
+    expect(nextSlot(Date.parse("2026-09-25T14:07:00Z"), 15)).toBe(Date.parse("2026-09-25T14:15:00Z"));
   });
 });

@@ -49,7 +49,7 @@ Syarat: Node.js 22+.
 npm install
 cp .env.example .env     # lalu isi
 npm run once             # satu putaran (DRY_RUN=true → simulasi saja)
-npm start                # jalan terus, tiap INTERVAL_MINUTES
+npm start                # jalan terus, distribusi tiap awal jam (INTERVAL_MINUTES=60)
 ```
 
 ### Langkah setup

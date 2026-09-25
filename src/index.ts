@@ -9,7 +9,7 @@ import {
   type Address,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { allocate, chunk } from "./allocate.js";
+import { allocate, chunk, nextSlot } from "./allocate.js";
 import { config as cfg } from "./config.js";
 import { eligibleBalances, syncBalances } from "./holders.js";
 import { announce } from "./notify.js";
@@ -199,8 +199,9 @@ async function main() {
     } catch (err) {
       console.error("Putaran gagal:", err);
     }
-    log(`Putaran berikutnya dalam ${cfg.intervalMinutes} menit`);
-    await new Promise((r) => setTimeout(r, cfg.intervalMinutes * 60_000));
+    const next = nextSlot(Date.now(), cfg.intervalMinutes);
+    log(`Putaran berikutnya: ${new Date(next).toISOString()}`);
+    await new Promise((r) => setTimeout(r, next - Date.now()));
   }
 }
 
