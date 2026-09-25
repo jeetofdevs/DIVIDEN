@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Hold $AIDIV and earn $AI. Trading fees from the $AIDIV/$AI pair are swapped to $AI and airdropped to holders automatically: 90% to holders, 10% to operations.">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/logo-512.png">
 <title>AIDIVIDEND</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,12 +102,10 @@
   .ca code { color: var(--cream); background: var(--navy); border: 1px solid var(--line); padding: 6px 10px; border-radius: 8px; }
 
   .coin { width: 100%; max-width: 440px; justify-self: center; filter: drop-shadow(0 30px 60px rgba(0,0,0,.45)); }
-  .coin .ring-text { transform-origin: 256px 256px; animation: spin 40s linear infinite; }
-  .coin .visor-glow { animation: glow 3.2s ease-in-out infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes glow { 50% { opacity: .35; } }
+  .coin .dv-eyes { animation: glow 3.2s ease-in-out infinite; }
+  @keyframes glow { 50% { opacity: .55; } }
   @media (prefers-reduced-motion: reduce) {
-    .coin .ring-text, .coin .visor-glow { animation: none; }
+    .coin .dv-eyes { animation: none; }
     html { scroll-behavior: auto; }
   }
   @media (max-width: 860px) {
@@ -216,7 +215,7 @@
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="AIDIVIDEND home">
-      <svg viewBox="0 0 512 512" aria-hidden="true"><use href="#coin-mark"/></svg>
+      <svg viewBox="0 0 512 512" aria-hidden="true"><use href="#divi-logo"/></svg>
       <span><b>AI</b>DIVIDEND</span>
     </a>
     <nav>
@@ -247,33 +246,34 @@
         </div>
       </div>
 
-      <svg class="coin" viewBox="0 0 512 512" role="img" aria-label="AIDIVIDEND logo: Divi the dog wearing an AI visor inside a gold dividend coin">
+      <svg class="coin" viewBox="0 0 512 512" role="img" aria-label="AIDIVIDEND logo: Divi the dog wearing an AI visor, with a head split 90/10 like a dividend pie chart">
         <defs>
-          <radialGradient id="rim" cx="35%" cy="30%" r="80%">
-            <stop offset="0" stop-color="#ffe3a3"/>
-            <stop offset=".55" stop-color="#f2b25e"/>
-            <stop offset="1" stop-color="#c97a2c"/>
-          </radialGradient>
-          <clipPath id="face"><circle cx="256" cy="256" r="182"/></clipPath>
-          <path id="ring" d="M256,256 m-213,0 a213,213 0 1,1 426,0 a213,213 0 1,1 -426,0"/>
-          <g id="coin-mark">
-            <circle cx="256" cy="256" r="252" fill="url(#rim)"/>
-            <circle cx="256" cy="256" r="244" fill="none" stroke="#8a5320" stroke-width="3" opacity=".6"/>
-            <circle cx="256" cy="256" r="196" fill="#16172f"/>
-            <image href="assets/mascot.jpg" x="74" y="74" width="364" height="364" clip-path="url(#face)" preserveAspectRatio="xMidYMid slice"/>
-            <circle cx="256" cy="256" r="186" fill="none" stroke="#8cff6a" stroke-width="6"/>
-            <g transform="translate(362 362)">
-              <circle r="46" fill="#8cff6a" stroke="#16172f" stroke-width="7"/>
-              <path d="M0,-25 L20,-2 H7.5 V23 H-7.5 V-2 H-20 Z" fill="#16172f"/>
-            </g>
-          </g>
-        </defs>
-        <use href="#coin-mark"/>
-        <circle class="visor-glow" cx="256" cy="256" r="186" fill="none" stroke="#8cff6a" stroke-width="14" opacity=".15"/>
-        <g class="ring-text">
-          <text font-family="Lilita One, Arial Rounded MT Bold, sans-serif" font-size="27" letter-spacing="3" fill="#22234a">
-            <textPath href="#ring" textLength="1320" lengthAdjust="spacing">AIDIVIDEND ✦ HOLD $AIDIV ✦ EARN $AI ✦ 90% TO HOLDERS ✦</textPath>
-          </text>
+    <filter id="dv-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="dv-visor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a3a5c"/><stop offset="1" stop-color="#0b0c1c"/>
+    </linearGradient>
+  </defs>
+        <g id="divi-logo">
+          <rect width="512" height="512" rx="116" fill="#22234a"/>
+  <g>
+    <path d="M112,250 L140,72 Q146,58 160,66 L262,160 Z" fill="#f2b25e" stroke="#16172f" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M400,250 L372,72 Q366,58 352,66 L250,160 Z" fill="#f2b25e" stroke="#16172f" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M140,210 L156,104 L220,166 Z" fill="#e8826b"/>
+    <path d="M372,210 L356,104 L292,166 Z" fill="#e8826b"/>
+    <path d="M256,300 L308.5,138.3 A170,170 0 1 1 203.5,138.3 Z" fill="#8cff6a" stroke="#16172f" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M256,300 L203.5,138.3 A170,170 0 0 1 308.5,138.3 Z" fill="#f2b25e" stroke="#16172f" stroke-width="10" stroke-linejoin="round"/>
+    <rect x="84" y="214" width="344" height="100" rx="50" fill="url(#dv-visor)" stroke="#16172f" stroke-width="10"/>
+    <path d="M122,234 Q256,214 390,234" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="8" stroke-linecap="round"/>
+    <g class="dv-eyes" filter="url(#dv-glow)" fill="#8cff6a">
+      <path d="M150,290 Q190,230 230,290 Q190,270 150,290 Z"/>
+      <path d="M282,290 Q322,230 362,290 Q322,270 282,290 Z"/>
+    </g>
+    <ellipse cx="256" cy="352" rx="22" ry="14" fill="#16172f"/>
+    <path d="M256,366 V378 M222,372 Q239,394 256,378 Q273,394 290,372" fill="none" stroke="#16172f" stroke-width="8" stroke-linecap="round"/>
+  </g>
         </g>
       </svg>
     </div>

@@ -10,7 +10,6 @@
       <stop offset="0" stop-color="#2a3a5c"/><stop offset="1" stop-color="#0b0c1c"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="116" fill="#22234a"/>
   <g>
     <path d="M112,250 L140,72 Q146,58 160,66 L262,160 Z" fill="#f2b25e" stroke="#16172f" stroke-width="10" stroke-linejoin="round"/>
     <path d="M400,250 L372,72 Q366,58 352,66 L250,160 Z" fill="#f2b25e" stroke="#16172f" stroke-width="10" stroke-linejoin="round"/>

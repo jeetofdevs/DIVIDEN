@@ -35,9 +35,11 @@ Folder `web/` berisi landing page berbahasa Inggris (HTML statis, tanpa build) d
 | File | Kegunaan |
 |---|---|
 | `web/index.html` | Landing page: hero, cara kerja, tokenomics 90/10, kalkulator dividen, FAQ |
-| `web/assets/logo.svg` / `logo-512.png` | Logo koin (untuk PFP X/Telegram, logo token di Long.xyz) |
+| `web/assets/logo.svg` / `logo-512.png` | Logo utama: Divi dengan kepala "dividend pie" 90/10 (PFP X/Telegram, logo token di Long.xyz, favicon) |
+| `web/assets/logo-mark.svg` | Logo tanpa background kotak |
 | `web/assets/logo-horizontal.svg` / `.png` | Logo + wordmark (banner, header) |
-| `web/assets/mascot.jpg` | Maskot asli "Divi" |
+| `web/assets/build_logo.py` | Generator semua file logo di atas |
+| `web/assets/mascot.jpg` | Maskot asli "Divi" (referensi) |
 
 Deploy: upload folder `web/` ke Vercel, Netlify, Cloudflare Pages, atau GitHub Pages. Setelah launch, ganti `TBA at launch` di `index.html` dengan contract address.
 
