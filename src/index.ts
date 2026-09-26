@@ -8,6 +8,7 @@ import {
   parseUnits,
   type Address,
 } from "viem";
+import { pathToFileURL } from "node:url";
 import { privateKeyToAccount } from "viem/accounts";
 import { allocate, chunk, nextSlot } from "./allocate.js";
 import { config as cfg } from "./config.js";
@@ -187,9 +188,10 @@ async function tick() {
   await executeRun(state, run, meta);
 }
 
-async function main() {
+/** Menjalankan bot: satu putaran (`once`) atau terus-menerus tiap INTERVAL_MINUTES. */
+export async function runBot(once = false): Promise<void> {
   log(`DIVIDEN — distributor ${account.address}, token ${cfg.token}, payout ${cfg.payoutToken}${cfg.dryRun ? " [DRY RUN]" : ""}`);
-  if (process.argv.includes("--once")) {
+  if (once) {
     await tick();
     return;
   }
@@ -205,7 +207,10 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Dijalankan langsung dari CLI (mis. `npm run once`).
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  runBot(process.argv.includes("--once")).catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

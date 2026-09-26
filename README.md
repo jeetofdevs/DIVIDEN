@@ -43,6 +43,20 @@ Folder `web/` berisi landing page berbahasa Inggris (HTML statis, tanpa build) d
 
 Deploy: upload folder `web/` ke Vercel, Netlify, Cloudflare Pages, atau GitHub Pages. Setelah launch, ganti `TBA at launch` di `index.html` dengan contract address.
 
+## Deploy ke Railway
+
+Satu service Railway menjalankan **website** (folder `web/`) dan **bot distribusi** sekaligus. Pengaturannya sudah ada di `railway.json`: build dengan `npm run build`, start dengan `npm start`, dan health check di `/health`.
+
+1. **New Project → Deploy from GitHub repo** → pilih repo ini dan branch-nya.
+2. **Variables:** isi semua variabel dari `.env.example`. Minimal `RPC_URL`, `CHAIN_ID`, `DISTRIBUTOR_PRIVATE_KEY`, `TOKEN_ADDRESS`, `TOKEN_DEPLOY_BLOCK`, `PAYOUT_TOKEN`, dan `OPERATIONS_WALLET`. `PORT` tidak perlu diisi.
+3. **Volume:** tambahkan Volume dengan mount path `/data`, lalu isi variabel `STATE_PATH=/data/state.json`. Tanpa Volume, riwayat distribusi hilang setiap kali redeploy.
+4. **Settings → Networking → Generate Domain** untuk membuka website.
+5. Cek `https://<domain>/health`:
+   - `"status":"running"` artinya bot berjalan.
+   - `"status":"disabled"` disertai `detail` artinya ada variabel yang kurang atau salah. Website tetap hidup, jadi tidak ada crash loop.
+
+Kalau hanya ingin website tanpa bot (misalnya sebelum token launch), isi `BOT_ENABLED=false`.
+
 ## Cara pakai
 
 Syarat: Node.js 22+.
@@ -51,7 +65,8 @@ Syarat: Node.js 22+.
 npm install
 cp .env.example .env     # lalu isi
 npm run once             # satu putaran (DRY_RUN=true → simulasi saja)
-npm start                # jalan terus, distribusi tiap awal jam (INTERVAL_MINUTES=60)
+npm run bot              # bot saja, jalan terus, distribusi tiap awal jam
+npm run build && npm start   # website + bot (seperti di Railway)
 ```
 
 ### Langkah setup
