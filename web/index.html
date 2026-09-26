@@ -109,7 +109,8 @@
     margin-top: 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
     font: 500 13px/1.4 var(--mono); color: var(--muted);
   }
-  .ca code { color: var(--cream); background: var(--navy); border: 1px solid var(--line); padding: 6px 10px; border-radius: 8px; }
+  .ca code { color: var(--cream); background: var(--navy); border: 1px solid var(--line); padding: 6px 10px; border-radius: 8px; overflow-wrap: anywhere; max-width: 100%; }
+  @media (max-width: 420px) { .ca code { font-size: 11.5px; padding: 6px 8px; } }
 
   .coin { width: 100%; max-width: 440px; justify-self: center; filter: drop-shadow(0 30px 60px rgba(0,0,0,.45)); }
   .coin .dv-eyes { animation: glow 3.2s ease-in-out infinite; }
@@ -252,7 +253,7 @@
         </div>
         <div class="ca">
           <span>Contract</span>
-          <code id="ca">TBA at launch</code>
+          <code id="ca">0x4fbb3dad4fc48ab601dd69c5ae81c71413481e18</code>
           <button class="btn btn-ghost" type="button" id="copy-ca" style="padding:6px 12px;font-size:13px">Copy</button>
         </div>
       </div>

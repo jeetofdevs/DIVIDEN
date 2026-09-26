@@ -41,7 +41,7 @@ Folder `web/` berisi landing page berbahasa Inggris (HTML statis, tanpa build) d
 | `web/assets/build_logo.py` | Generator semua file logo di atas |
 | `web/assets/mascot.jpg` | Maskot asli "Divi" (referensi) |
 
-Deploy: upload folder `web/` ke Vercel, Netlify, Cloudflare Pages, atau GitHub Pages. Setelah launch, ganti `TBA at launch` di `index.html` dengan contract address.
+Deploy: upload folder `web/` ke Vercel, Netlify, Cloudflare Pages, atau GitHub Pages. Contract address $AIDIV (`0x4fbb3dad4fc48ab601dd69c5ae81c71413481e18`) sudah tercantum di `index.html`.
 
 ## Deploy ke Railway
 

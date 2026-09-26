@@ -34,13 +34,12 @@ Hold $AIDIV. Earn $AI.
 • Paid every hour, on the hour
 • No staking. No claiming. Just hold.
 
-CA: 0x0000000000000000000000000000000000000000
+CA: 0x4fbb3dad4fc48ab601dd69c5ae81c71413481e18
 
 Buy on Long.xyz 👇
 https://app.long.xyz
 ```
 
-- Ganti `0x000…000` dengan contract address asli (panjangnya sama, 42 karakter, jadi hitungan tidak berubah).
 - Ganti `https://app.long.xyz` dengan link halaman token Anda. Link berapa pun panjangnya tetap dihitung 23.
 - Akun non-premium **tidak bisa edit post**. Cek CA dua kali sebelum posting, lalu **pin** post ini.
 
@@ -66,5 +65,5 @@ Every trade on the $AIDIV/$AI pair pays holders. 90% of fees are airdropped in $
 
 No staking. No claiming.
 
-CA: 0x0000000000000000000000000000000000000000
+CA: 0x4fbb3dad4fc48ab601dd69c5ae81c71413481e18
 ```
