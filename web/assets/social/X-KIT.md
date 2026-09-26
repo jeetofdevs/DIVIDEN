@@ -11,17 +11,15 @@ Semua teks dalam bahasa Inggris dan sudah dihitung dengan aturan X untuk akun **
 | Sampul (header) | `x-header-1500x500.png` |
 | Nama (19/50) | `AIDIVIDEND \| $AIDIV` |
 | Lokasi | `Robinhood Chain` |
-| Website | domain website Anda (atau link token di Long.xyz) |
+| Website | domain website Anda, atau `https://app.long.xyz/tokens/0x4FbB3DaD4Fc48Ab601DD69C5Ae81c71413481E18` |
 
-**Bio (154/160)**
+**Bio (149/160)**
 
 ```
 Hold $AIDIV. Earn $AI. 🐶
 90% of pair fees airdropped to holders every hour, on the hour. No staking. No claiming.
-Launching on Long.xyz · Robinhood Chain
+Live on Long.xyz · Robinhood Chain
 ```
-
-Setelah launch, ganti baris terakhir menjadi `Live on Long.xyz · Robinhood Chain`.
 
 ## 2. First post (237/280) — lampirkan `x-launch-card-1600x900.png`
 
@@ -37,10 +35,9 @@ Hold $AIDIV. Earn $AI.
 CA: 0x4fbb3dad4fc48ab601dd69c5ae81c71413481e18
 
 Buy on Long.xyz 👇
-https://app.long.xyz
+https://app.long.xyz/tokens/0x4FbB3DaD4Fc48Ab601DD69C5Ae81c71413481E18
 ```
 
-- Ganti `https://app.long.xyz` dengan link halaman token Anda. Link berapa pun panjangnya tetap dihitung 23.
 - Akun non-premium **tidak bisa edit post**. Cek CA dua kali sebelum posting, lalu **pin** post ini.
 
 ## 3. Balasan pertama (thread) di bawah first post (269/280)
