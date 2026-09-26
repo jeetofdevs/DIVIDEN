@@ -67,9 +67,11 @@ CA: 0x4fbb3dad4fc48ab601dd69c5ae81c71413481e18
 
 ## 5. Post lanjutan
 
-Urutan yang disarankan: 1–2 post per hari. Teks dalam `[kurung]` diganti dengan angka asli sebelum posting.
+Urutan yang disarankan: 1–2 post per hari. Semua gambar ada di `posts/` (1600×900). Teks dalam `[kurung]` diganti dengan angka asli sebelum posting.
 
 ### 1. Kenalan dengan Divi — lampirkan `x-profile-400.png` atau logo (235/280)
+
+Gambar: `posts/01-meet-divi.png`
 
 ```
 Meet Divi 🐶
@@ -85,6 +87,8 @@ CA: 0x4fbb3dad4fc48ab601dd69c5ae81c71413481e18
 
 ### 2. Ke mana fee-nya? — lampirkan `x-header-1500x500.png` (201/280)
 
+Gambar: `posts/02-fee-split.png`
+
 ```
 Where do the fees go?
 
@@ -98,6 +102,8 @@ Just hold $AIDIV.
 
 ### 3. Holder kecil tetap dapat (204/280)
 
+Gambar: `posts/03-small-bags.png`
+
 ```
 Small bag? You still earn.
 
@@ -109,6 +115,8 @@ Every holder counts. 🐶
 ```
 
 ### 4. Adil & aman (196/280)
+
+Gambar: `posts/04-built-fair.png`
 
 ```
 Built fair:
@@ -123,6 +131,8 @@ Dividends go to real holders only.
 
 ### 5. TEMPLATE: laporan distribusi pertama (isi angka dari log bot) (118/280)
 
+Gambar: `posts/08-round-complete.png`
+
 ```
 Round #1 is done 🐶
 
@@ -135,6 +145,8 @@ Hold $AIDIV. Earn $AI.
 ```
 
 ### 6. Jadwal tiap jam (111/280)
+
+Gambar: `posts/06-every-hour.png`
 
 ```
 Divi doesn't sleep.
@@ -150,6 +162,8 @@ $AIDIV
 
 ### 7. Engagement (ajak balas) (113/280)
 
+Gambar: `posts/07-how-much.png`
+
 ```
 How many $AI has Divi fetched for you so far? 👇
 
@@ -157,6 +171,8 @@ Drop your number and your favorite hour of the day to get paid.
 ```
 
 ### 8. Cara beli untuk pendatang baru (159/280)
+
+Gambar: `posts/05-how-to-buy.png`
 
 ```
 New here? 3 steps:
